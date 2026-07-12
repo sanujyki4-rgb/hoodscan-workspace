@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Block {
+  number          BigInt   @id
+  hash            String   @unique
+  parentHash      String
+  timestamp       DateTime
+  gasUsed         BigInt
+  gasLimit        BigInt
+  baseFeePerGas   BigInt
+  l1BlockNumber   BigInt
+  sendCount       BigInt
+  sendRoot        String
+  size            Int
+  txCount         Int
+  isFinalized     Boolean  @default(false)
+
+  transactions    Transaction[]
+
+  @@index([timestamp])
+}
+
+model Transaction {
+  hash                  String   @id
+  blockNumber           BigInt
+  block                 Block    @relation(fields: [blockNumber], references: [number])
+  transactionIndex      Int
+
+  fromAddress           String
+  toAddress              String?  // nullable: contract deployment
+  nonce                 BigInt
+  value                 Decimal  @db.Decimal(38, 0) // wei, can be very large
+  gas                   BigInt
+  gasPrice              Decimal? @db.Decimal(38, 0)
+  maxFeePerGas          Decimal? @db.Decimal(38, 0)
+  maxPriorityFeePerGas  Decimal? @db.Decimal(38, 0)
+
+  input                 String   // raw calldata, can be long
+  functionSelector      String?  // first 4 bytes of input, for fast filtering
+  txType                String   // '0x0', '0x2', '0x6a', etc.
+
+  @@index([blockNumber])
+  @@index([fromAddress])
+  @@index([toAddress])
+  @@index([functionSelector])
+}

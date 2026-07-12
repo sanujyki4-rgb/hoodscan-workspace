@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: hoodscan-indexer-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hoodscan_indexer
+      POSTGRES_PASSWORD: hoodscan_indexer
+      POSTGRES_DB: hoodscan_indexer
+    ports:
+      - "5434:5432"
+    volumes:
+      - hoodscan_indexer_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  hoodscan_indexer_postgres_data:
