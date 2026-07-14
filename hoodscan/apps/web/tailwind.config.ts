@@ -1,19 +1,22 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: ["selector", '[data-theme="dark"]'],
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        base: "#0A0B0D",
-        panel: "#14171A",
-        border: "#23272B",
-        ink: "#E7E9EA",
-        muted: "#8B9298",
-        accent: "#D4A72C",
-        "accent-dim": "#8A6E22",
-        finalized: "#3FB27F",
-        pending: "#8B9298",
+        base: "rgb(var(--color-base) / <alpha-value>)",
+        surface: "rgb(var(--color-surface) / <alpha-value>)",
+        feather: "rgb(var(--color-surface) / <alpha-value>)",
+        border: "rgb(var(--color-border) / <alpha-value>)",
+        ink: "rgb(var(--color-ink) / <alpha-value>)",
+        muted: "rgb(var(--color-muted) / <alpha-value>)",
+        lime: "rgb(var(--color-lime) / <alpha-value>)",
+        "lime-dark": "rgb(var(--color-lime-dark) / <alpha-value>)",
+        "lime-bright": "rgb(var(--color-lime-bright) / <alpha-value>)",
+        "lime-bright-dark": "rgb(var(--color-lime-bright-dark) / <alpha-value>)",
+        danger: "rgb(var(--color-danger) / <alpha-value>)",
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],

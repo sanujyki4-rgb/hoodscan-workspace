@@ -3,6 +3,8 @@
  * from lib/api.ts so display logic doesn't leak into data-fetching code.
  */
 
+import type { BlockSummary } from "./api";
+
 export function shortenHash(hash: string, chars = 6): string {
   if (hash.length <= chars * 2 + 2) return hash;
   return `${hash.slice(0, chars + 2)}…${hash.slice(-chars)}`;
@@ -33,4 +35,17 @@ export function txTypeLabel(type: string): string {
     "0x6a": "System",
   };
   return labels[type] ?? type;
+}
+
+/**
+ * Average time between blocks, in milliseconds, measured across the
+ * given (newest-first) block list. Returns 0 if there isn't enough
+ * data to measure a span — callers decide how to display that (e.g.
+ * fall back to "—").
+ */
+export function avgBlockTimeMs(blocks: BlockSummary[]): number {
+  if (blocks.length < 2) return 0;
+  const newest = new Date(blocks[0].timestamp).getTime();
+  const oldest = new Date(blocks[blocks.length - 1].timestamp).getTime();
+  return ((newest - oldest) / 1000 / (blocks.length - 1)) * 1000;
 }

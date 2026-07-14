@@ -33,15 +33,15 @@ export default async function TransactionPage({
         </h1>
         <div className="flex items-center gap-2">
           {isSystemTx && (
-            <span className="rounded-full bg-muted/10 px-2.5 py-1 text-xs font-medium text-muted">
+            <span className="rounded-full bg-muted/15 px-2.5 py-1 text-xs font-medium text-muted">
               System tx (L1↔L2 sync)
             </span>
           )}
           <span
             className={`rounded-full px-2.5 py-1 text-xs font-medium ${
               tx.block.isFinalized
-                ? "bg-finalized/10 text-finalized"
-                : "bg-pending/10 text-pending"
+                ? "bg-lime/15 text-lime"
+                : "bg-muted/15 text-muted"
             }`}
           >
             {tx.block.isFinalized ? "Finalized" : "Pending"}
@@ -49,12 +49,12 @@ export default async function TransactionPage({
         </div>
       </div>
 
-      <div className="rounded-lg border border-border bg-panel px-4">
+      <div className="rounded-xl border border-border bg-surface px-4">
         <DetailRow label="Hash" value={tx.hash} />
         <DetailRow
           label="Block"
           value={
-            <Link href={`/block/${tx.blockNumber}`} className="text-accent hover:underline">
+            <Link href={`/block/${tx.blockNumber}`} className="text-lime hover:underline">
               #{tx.blockNumber}
             </Link>
           }
@@ -64,7 +64,7 @@ export default async function TransactionPage({
         <DetailRow
           label="From"
           value={
-            <Link href={`/address/${tx.fromAddress}`} className="text-accent hover:underline">
+            <Link href={`/address/${tx.fromAddress}`} className="text-lime hover:underline">
               {tx.fromAddress}
             </Link>
           }
@@ -73,7 +73,7 @@ export default async function TransactionPage({
           label="To"
           value={
             tx.toAddress ? (
-              <Link href={`/address/${tx.toAddress}`} className="text-accent hover:underline">
+              <Link href={`/address/${tx.toAddress}`} className="text-lime hover:underline">
                 {tx.toAddress}
               </Link>
             ) : (
@@ -94,7 +94,7 @@ export default async function TransactionPage({
         <h2 className="text-sm font-medium uppercase tracking-wide text-muted">
           Input data
         </h2>
-        <pre className="max-h-64 overflow-auto rounded-lg border border-border bg-panel px-4 py-3 font-mono text-xs text-muted">
+        <pre className="max-h-64 overflow-auto rounded-xl border border-border bg-surface px-4 py-3 font-mono text-xs text-muted">
           {tx.input}
         </pre>
       </div>

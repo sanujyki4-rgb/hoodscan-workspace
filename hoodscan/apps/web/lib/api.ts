@@ -6,6 +6,7 @@ export interface BlockSummary {
   timestamp: string;
   txCount: number;
   gasUsed: string;
+  gasLimit: string;
   isFinalized: boolean;
 }
 
@@ -18,6 +19,19 @@ export interface TransactionSummary {
   value: string;
   txType: string;
   functionSelector: string | null;
+  /**
+   * NOT YET PROVIDED BY BACKEND — see docs/BACKEND_TODO.md.
+   * The real Ethereum L1 transaction hash that created this L1→L2
+   * message (via the Inbox/bridge contract's retryable ticket).
+   * Optional/nullable on purpose: UI must render correctly whether
+   * this is present or not, since backend doesn't send it yet.
+   */
+  l1TxHash?: string | null;
+  block?: {
+    timestamp: string;
+    isFinalized: boolean;
+    l1BlockNumber?: string;
+  };
 }
 
 export interface TransactionDetail extends TransactionSummary {
@@ -57,6 +71,39 @@ async function apiFetch<T>(path: string, revalidate = 5): Promise<T | null> {
 
 export function getLatestBlocks(limit = 20) {
   return apiFetch<BlockSummary[]>(`/blocks?limit=${limit}`, 2);
+}
+
+export function getLatestTransactions(limit = 15) {
+  return apiFetch<TransactionSummary[]>(`/transactions?limit=${limit}`, 2);
+}
+
+export function getLatestL1ToL2Transactions(limit = 15) {
+  return apiFetch<TransactionSummary[]>(`/transactions/l1-to-l2?limit=${limit}`, 2);
+}
+
+export function getPaginatedL1ToL2Transactions(limit = 25, offset = 0) {
+  return apiFetch<{
+    transactions: TransactionSummary[];
+    total: number;
+    limit: number;
+    offset: number;
+  }>(`/transactions/l1-to-l2?limit=${limit}&offset=${offset}`, 2);
+}
+
+export function getPaginatedBlocks(limit = 25, offset = 0) {
+  return apiFetch<{ blocks: BlockSummary[]; total: number; limit: number; offset: number }>(
+    `/blocks?limit=${limit}&offset=${offset}`,
+    2
+  );
+}
+
+export function getPaginatedTransactions(limit = 25, offset = 0) {
+  return apiFetch<{
+    transactions: TransactionSummary[];
+    total: number;
+    limit: number;
+    offset: number;
+  }>(`/transactions?limit=${limit}&offset=${offset}`, 2);
 }
 
 export function getBlockByNumber(number: string) {

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const display = Space_Grotesk({
   subsets: ["latin"],
@@ -25,20 +28,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${dataFace.variable}`}>
-      <body className="font-display">
-        <header className="border-b border-border">
-          <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-            <a href="/" className="flex items-center gap-2">
-              <span className="pulse-dot h-2 w-2 rounded-full bg-accent" />
-              <span className="text-lg font-bold tracking-tight">
-                hoodscan
-              </span>
-            </a>
-            <span className="text-xs text-muted">Robinhood Chain · 4663</span>
-          </div>
-        </header>
-        <main className="mx-auto max-w-5xl px-6 py-8">{children}</main>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${display.variable} ${dataFace.variable}`}
+    >
+      <body className="flex min-h-screen flex-col font-display">
+        <Providers>
+          <Header />
+
+          <main className="mx-auto w-full max-w-[1600px] flex-1 px-8 py-8 sm:px-12 lg:px-20">
+            {children}
+          </main>
+
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

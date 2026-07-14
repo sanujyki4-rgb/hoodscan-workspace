@@ -32,15 +32,15 @@ export default async function BlockPage({
         <span
           className={`rounded-full px-2.5 py-1 text-xs font-medium ${
             block.isFinalized
-              ? "bg-finalized/10 text-finalized"
-              : "bg-pending/10 text-pending"
+              ? "bg-lime/15 text-lime"
+              : "bg-muted/15 text-muted"
           }`}
         >
           {block.isFinalized ? "Finalized" : "Pending"}
         </span>
       </div>
 
-      <div className="rounded-lg border border-border bg-panel px-4">
+      <div className="rounded-xl border border-border bg-surface px-4">
         <DetailRow label="Timestamp" value={`${timeAgo(block.timestamp)}`} />
         <DetailRow label="Hash" value={block.hash} />
         <DetailRow label="Parent hash" value={block.parentHash} />

@@ -2,9 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme tokens ──────────────────────────────────────────────
+   Each theme defines the same set of variables as space-separated
+   RGB triplets (required for Tailwind's `rgb(var(--x) / <alpha>)`
+   pattern, which is what makes classes like bg-lime/5 or bg-base/90
+   work correctly across all three themes). */
+
+[data-theme="dark"] {
+  --color-base: 13 12 9;        /* #0D0C09 */
+  --color-surface: 28 24 13;    /* #1C180D */
+  --color-border: 42 38 24;     /* #2A2618 */
+  --color-ink: 255 255 255;
+  --color-muted: 154 150 137;
+  --color-lime: 204 255 0;      /* #CCFF00 */
+  --color-lime-dark: 184 230 0;
+  --color-lime-bright: 204 255 0;      /* fixed #CCFF00, for solid fills */
+  --color-lime-bright-dark: 184 230 0; /* fixed fill hover-darken */
+  --color-danger: 255 90 95;
+}
+
+[data-theme="dim"] {
+  --color-base: 30 30 28;       /* #1E1E1C — neutral charcoal, not brownish */
+  --color-surface: 42 41 38;    /* #2A2926 */
+  --color-border: 60 59 55;     /* #3C3B37 */
+  --color-ink: 240 240 238;
+  --color-muted: 165 163 158;
+  --color-lime: 204 255 0;
+  --color-lime-dark: 184 230 0;
+  --color-lime-bright: 204 255 0;
+  --color-lime-bright-dark: 184 230 0;
+  --color-danger: 255 106 111;
+}
+
+[data-theme="light"] {
+  --color-base: 255 255 255;
+  --color-surface: 247 247 246; /* #F7F7F6 — neutral off-white, no khaki tint */
+  --color-border: 231 231 228;  /* #E7E7E4 — neutral light gray */
+  --color-ink: 20 20 20;
+  --color-muted: 108 108 105;
+  --color-lime: 77 153 0;       /* #4D9900 — darkened for legible text on white */
+  --color-lime-dark: 65 130 0;
+  --color-lime-bright: 204 255 0;      /* fixed #CCFF00 — for solid fills (buttons, badges, logo), never darkened */
+  --color-lime-bright-dark: 184 230 0; /* fixed fill hover-darken */
+  --color-danger: 214 45 51;
+}
+
 @layer base {
   body {
-    @apply bg-base text-ink;
+    @apply bg-base text-ink transition-colors duration-150;
   }
 }
 
