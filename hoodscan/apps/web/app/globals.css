@@ -18,6 +18,7 @@
   --color-lime-dark: 184 230 0;
   --color-lime-bright: 204 255 0;      /* fixed #CCFF00, for solid fills */
   --color-lime-bright-dark: 184 230 0; /* fixed fill hover-darken */
+  --color-warning: 251 191 36;  /* amber-400, for "pending/out" indicators */
   --color-danger: 255 90 95;
 }
 
@@ -31,6 +32,7 @@
   --color-lime-dark: 184 230 0;
   --color-lime-bright: 204 255 0;
   --color-lime-bright-dark: 184 230 0;
+  --color-warning: 251 191 36;
   --color-danger: 255 106 111;
 }
 
@@ -44,6 +46,7 @@
   --color-lime-dark: 65 130 0;
   --color-lime-bright: 204 255 0;      /* fixed #CCFF00 — for solid fills (buttons, badges, logo), never darkened */
   --color-lime-bright-dark: 184 230 0; /* fixed fill hover-darken */
+  --color-warning: 180 83 9;    /* amber-700, darkened for legible text on white */
   --color-danger: 214 45 51;
 }
 
@@ -64,6 +67,22 @@
     .pulse-dot {
       animation: none;
     }
+  }
+
+  /* Use instead of Tailwind's built-in `tabular-nums` for standalone
+     number cells (block numbers, queue index, gas, etc). Space
+     Grotesk's default digits are drawn at cap-height ("lining
+     figures"), which reads noticeably bigger/bolder than the
+     lowercase letters next to them — that's the actual typeface
+     behind the "numbers look bigger than letters" issue, not a sizing
+     bug. `oldstyle-nums` switches to figures sized to match lowercase
+     text instead of caps; `tabular-nums` is kept alongside it so
+     digits still line up evenly in a column. Falls back to Space
+     Grotesk's default lining figures with no visual change if the
+     browser/font subset doesn't expose the oldstyle-nums OpenType
+     feature — safe either way. */
+  .nums {
+    font-variant-numeric: oldstyle-nums tabular-nums;
   }
 }
 

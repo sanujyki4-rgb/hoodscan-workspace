@@ -58,7 +58,7 @@ export default async function BlockPage({
         <h2 className="text-sm font-medium uppercase tracking-wide text-muted">
           Transactions ({block.transactions.length})
         </h2>
-        <TxTable transactions={block.transactions} />
+        <TxTable transactions={block.transactions} variant="detailed" />
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ export default function NotFound() {
         That block, transaction, or address hasn&apos;t been indexed yet — or
         doesn&apos;t exist.
       </p>
-      <Link href="/" className="text-sm text-accent hover:underline">
+      <Link href="/" className="text-sm text-lime hover:underline">
         Back to latest blocks
       </Link>
     </div>

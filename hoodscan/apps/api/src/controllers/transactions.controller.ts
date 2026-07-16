@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { prisma } from "@hoodscan/database";
 import { TX_TYPE_LABELS } from "@hoodscan/types";
 import { serializeBigInt } from "../utils/serialize";
+import { parsePagination } from "../utils/pagination";
 
 /**
  * GET /transactions?limit=15&offset=0
@@ -10,10 +11,9 @@ import { serializeBigInt } from "../utils/serialize";
  * panel (no offset) and the "view all transactions" page (with offset).
  */
 export async function listLatestTransactions(req: Request, res: Response) {
-  const limit = Math.min(Number(req.query.limit) || 15, 50);
-  const offset = Math.max(Number(req.query.offset) || 0, 0);
+  const { limit, offset, hasOffset } = parsePagination(req, 15, 50);
 
-  if (!req.query.offset) {
+  if (!hasOffset) {
     const transactions = await prisma.transaction.findMany({
       orderBy: [{ blockNumber: "desc" }, { transactionIndex: "desc" }],
       take: limit,
@@ -57,9 +57,7 @@ export async function listLatestTransactions(req: Request, res: Response) {
  * Full "view all" page (with offset): everything, pending included.
  */
 export async function listL1ToL2Transactions(req: Request, res: Response) {
-  const limit = Math.min(Number(req.query.limit) || 15, 50);
-  const offset = Math.max(Number(req.query.offset) || 0, 0);
-  const hasOffset = Boolean(req.query.offset);
+  const { limit, offset, hasOffset } = parsePagination(req, 15, 50);
   const where = hasOffset ? {} : { status: "relayed" };
   const include = {
     transaction: {

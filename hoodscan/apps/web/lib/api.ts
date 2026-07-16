@@ -7,6 +7,8 @@ export interface BlockSummary {
   txCount: number;
   gasUsed: string;
   gasLimit: string;
+  baseFeePerGas: string;
+  l1BlockNumber: string;
   isFinalized: boolean;
 }
 
@@ -17,6 +19,10 @@ export interface TransactionSummary {
   fromAddress: string;
   toAddress: string | null;
   value: string;
+  gas?: string;
+  gasPrice?: string | null;
+  maxFeePerGas?: string | null;
+  maxPriorityFeePerGas?: string | null;
   txType: string;
   functionSelector: string | null;
   /**

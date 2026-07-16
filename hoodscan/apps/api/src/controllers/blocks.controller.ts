@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "@hoodscan/database";
 import { serializeBigInt } from "../utils/serialize";
+import { parsePagination } from "../utils/pagination";
 
 /**
  * GET /blocks?limit=20&offset=0
@@ -8,13 +9,12 @@ import { serializeBigInt } from "../utils/serialize";
  * blocks" page; the homepage just uses limit with no offset.
  */
 export async function listLatestBlocks(req: Request, res: Response) {
-  const limit = Math.min(Number(req.query.limit) || 20, 100);
-  const offset = Math.max(Number(req.query.offset) || 0, 0);
+  const { limit, offset, hasOffset } = parsePagination(req, 20, 100);
 
   // Homepage calls this without wanting the {blocks, total} envelope —
   // keep that shape (bare array) for backward compatibility, and only
   // return the paginated envelope when offset is explicitly used.
-  if (!req.query.offset) {
+  if (!hasOffset) {
     const blocks = await prisma.block.findMany({
       orderBy: { number: "desc" },
       take: limit,

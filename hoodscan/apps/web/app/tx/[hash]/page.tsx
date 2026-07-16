@@ -106,7 +106,7 @@ export default async function TransactionPage({
             )
           }
         />
-        <DetailRow label="Value" value={`${weiToEth(tx.value)} ETH`} />
+        <DetailRow label="Amount" value={`${weiToEth(tx.value)} ETH`} />
         <DetailRow label="Gas" value={tx.gas} />
         {tx.gasPrice && <DetailRow label="Gas price" value={tx.gasPrice} />}
         {tx.maxFeePerGas && <DetailRow label="Max fee per gas" value={tx.maxFeePerGas} />}

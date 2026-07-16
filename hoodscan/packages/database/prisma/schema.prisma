@@ -47,6 +47,13 @@ model Transaction {
   txType                String   // '0x0', '0x2', '0x69' (ArbitrumSubmitRetryableTx = real L1->L2 message), '0x6a' (ArbitrumInternalTx = ArbOS per-block housekeeping, NOT an L1->L2 message), etc.
   requestId             String?  // only set for txType '0x69' — matched against L1ToL2Message.requestId
 
+  // Receipt-derived fields — NOT available from the block/tx object
+  // itself, require a separate eth_getBlockReceipts (or per-tx
+  // eth_getTransactionReceipt) call. Nullable because older indexed
+  // rows (before this field existed) won't have it backfilled.
+  gasUsed               BigInt?  // actual gas consumed, from the receipt
+  effectiveGasPrice     Decimal? @db.Decimal(38, 0) // actual wei/gas paid, from the receipt (accounts for EIP-1559 base fee + tip)
+
   l1ToL2Message         L1ToL2Message?
 
   @@index([blockNumber])

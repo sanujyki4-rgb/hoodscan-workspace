@@ -76,7 +76,7 @@ export default async function HomePage() {
               Couldn&apos;t reach the hoodscan API.
             </p>
           ) : (
-            <TxTable transactions={transactions} showAge showType={false} viewAllHref="/transactions" />
+            <TxTable transactions={transactions} viewAllHref="/transactions" />
           )}
         </div>
 

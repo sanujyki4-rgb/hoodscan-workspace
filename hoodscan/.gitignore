@@ -6,3 +6,6 @@ dist/
 *.log
 .turbo/
 .DS_Store
+
+*.tsbuildinfo
+

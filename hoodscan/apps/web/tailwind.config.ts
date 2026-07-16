@@ -8,7 +8,6 @@ const config: Config = {
       colors: {
         base: "rgb(var(--color-base) / <alpha-value>)",
         surface: "rgb(var(--color-surface) / <alpha-value>)",
-        feather: "rgb(var(--color-surface) / <alpha-value>)",
         border: "rgb(var(--color-border) / <alpha-value>)",
         ink: "rgb(var(--color-ink) / <alpha-value>)",
         muted: "rgb(var(--color-muted) / <alpha-value>)",
@@ -16,6 +15,7 @@ const config: Config = {
         "lime-dark": "rgb(var(--color-lime-dark) / <alpha-value>)",
         "lime-bright": "rgb(var(--color-lime-bright) / <alpha-value>)",
         "lime-bright-dark": "rgb(var(--color-lime-bright-dark) / <alpha-value>)",
+        warning: "rgb(var(--color-warning) / <alpha-value>)",
         danger: "rgb(var(--color-danger) / <alpha-value>)",
       },
       fontFamily: {

@@ -23,6 +23,17 @@ import { LayersIcon } from "./icons";
  *   all" page, which has room to spare): 6 separate columns, one
  *   per field, matching Arbiscan's txsDeposits exactly — Block No /
  *   Queue Index / L1 Tx / L1 Tx Origin / L2 Tx / Age.
+ *
+ * Font: no `font-mono` (see BlocksTable.tsx for why) — plain number
+ * cells (block numbers, queue index) use the `.nums` utility
+ * (globals.css) on the body font instead; hashes/addresses are
+ * truncated already and don't carry it, same convention as
+ * BlocksTable/TxTable.
+ *
+ * Weight convention (applies across BlocksTable/TxTable/L1L2Table/
+ * AddressTxTable): any text-lime link is a column's primary
+ * identifying value and gets font-medium; muted secondary references
+ * (addresses shown as "from X", age, queue index) stay unweighted.
  */
 export function L1L2Table({
   messages,
@@ -72,55 +83,65 @@ export function L1L2Table({
                 i % 2 === 1 ? "bg-surface/40" : ""
               }`;
 
+              // View-all (detailed): all column values including Age + Queue = text-sm.
+              // Homepage (compact): Age + Queue stay text-xs; primary values text-sm.
               if (variant === "detailed") {
                 return (
                   <tr key={msg.id} className={rowClass}>
-                    <td className="px-4 py-2.5 font-mono">
+                    <td className="px-4 py-2.5 text-sm">
                       <a
                         href={`https://etherscan.io/block/${msg.originBlockNumber}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm font-medium text-lime hover:underline"
+                        className="nums flex items-center gap-2 text-sm font-medium text-lime hover:underline"
                       >
                         <LayersIcon size={24} className="hidden shrink-0 text-lime sm:inline-block" />
-                        {Number(msg.originBlockNumber).toLocaleString()}
+                        {msg.originBlockNumber}
                       </a>
                     </td>
-                    <td className="px-4 py-2.5 font-mono text-sm text-muted">#{msg.id}</td>
-                    <td className="px-4 py-2.5 font-mono">
+                    <td className="nums px-4 py-2.5 text-sm text-muted">#{msg.id}</td>
+                    <td className="px-4 py-2.5 text-sm">
                       {msg.l2TxHash ? (
                         <Link href={`/tx/${msg.l2TxHash}`} className="text-sm font-medium text-lime hover:underline">
                           {shortenHash(msg.l2TxHash, 3)}
                         </Link>
                       ) : (
-                        <span className="text-sm font-medium italic text-amber-500/80">
+                        <span className="text-sm font-medium italic text-warning/80">
                           Pending Confirmation
                         </span>
                       )}
                     </td>
                     <td className="px-4 py-2.5 text-sm text-muted">{age}</td>
-                    <td className="px-4 py-2.5 font-mono">
+                    <td className="px-4 py-2.5 text-sm">
                       <a
                         href={`https://etherscan.io/tx/${msg.originTxHash}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-lime hover:underline"
+                        className="text-sm font-medium text-lime hover:underline"
                       >
                         {shortenHash(msg.originTxHash, 3)}
                       </a>
                     </td>
-                    <td className="px-4 py-2.5 font-mono text-sm text-muted">
-                      {shortenHash(msg.originAddress, 3)}
+                    <td className="px-4 py-2.5 text-sm text-muted">
+                      <a
+                        href={`https://etherscan.io/address/${msg.originAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-lime hover:underline"
+                        title="View L1 address on Etherscan"
+                      >
+                        {shortenHash(msg.originAddress, 3)}
+                      </a>
                     </td>
-                    <td className="px-4 py-2.5 font-mono text-sm text-muted">
-                      {msg.l2Block ? Number(msg.l2Block.number).toLocaleString() : "—"}
+                    <td className="nums px-4 py-2.5 text-sm text-muted">
+                      {msg.l2Block ? msg.l2Block.number : "—"}
                     </td>
-                    <td className="px-4 py-2.5">
+                    <td className="px-4 py-2.5 text-sm">
                       <span
                         className={`rounded-full px-2 py-0.5 text-sm font-medium ${
                           msg.status === "relayed"
                             ? "bg-lime/15 text-lime"
-                            : "bg-amber-500/15 text-amber-500"
+                            : "bg-warning/15 text-warning"
                         }`}
                       >
                         {msg.status === "relayed" ? "Relayed" : "Pending"}
@@ -132,9 +153,8 @@ export function L1L2Table({
 
               return (
                 <tr key={msg.id} className={rowClass}>
-                  {/* L1 Block + Queue Index, stacked together after the icon
-                      so both lines line up under the icon, not one under it. */}
-                  <td className="px-4 py-2.5">
+                  {/* L1 Block + Queue Index — queue is not a main column value → text-xs */}
+                  <td className="px-4 py-2.5 text-sm">
                     <a
                       href={`https://etherscan.io/block/${msg.originBlockNumber}`}
                       target="_blank"
@@ -143,37 +163,46 @@ export function L1L2Table({
                     >
                       <LayersIcon size={24} className="hidden shrink-0 text-lime sm:inline-block" />
                       <span className="flex flex-col gap-0.5">
-                        <span className="font-mono text-sm font-medium text-lime group-hover/link:underline">
-                          {Number(msg.originBlockNumber).toLocaleString()}
+                        <span className="nums text-sm font-medium text-lime group-hover/link:underline">
+                          {msg.originBlockNumber}
                         </span>
-                        <span className="text-xs text-muted">Queue #{msg.id}</span>
+                        <span className="nums text-xs text-muted">Queue #{msg.id}</span>
                       </span>
                     </a>
                   </td>
 
-                  {/* L1 Tx + L1 Tx Origin (the L1 sender address) */}
-                  <td className="px-4 py-2.5 font-mono">
+                  {/* L1 Tx + origin address (address is column meta → text-sm) */}
+                  <td className="px-4 py-2.5 text-sm">
                     <a
                       href={`https://etherscan.io/tx/${msg.originTxHash}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-lime hover:underline"
+                      className="text-sm font-medium text-lime hover:underline"
                     >
                       {shortenHash(msg.originTxHash, 3)}
                     </a>
                     <span className="mt-0.5 block text-xs text-muted">
-                      from {shortenHash(msg.originAddress, 3)}
+                      from{" "}
+                      <a
+                        href={`https://etherscan.io/address/${msg.originAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-lime hover:underline"
+                        title="View L1 address on Etherscan"
+                      >
+                        {shortenHash(msg.originAddress, 3)}
+                      </a>
                     </span>
                   </td>
 
-                  {/* L2 Tx — real hash once relayed, "Pending Confirmation" until then */}
-                  <td className="px-4 py-2.5 font-mono">
+                  {/* L2 Tx + age (age is time → text-xs) */}
+                  <td className="px-4 py-2.5 text-sm">
                     {msg.l2TxHash ? (
                       <Link href={`/tx/${msg.l2TxHash}`} className="text-sm font-medium text-lime hover:underline">
                         {shortenHash(msg.l2TxHash, 3)}
                       </Link>
                     ) : (
-                      <span className="text-sm font-medium italic text-amber-500/80">
+                      <span className="text-sm font-medium italic text-warning/80">
                         Pending Confirmation
                       </span>
                     )}

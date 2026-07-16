@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "@hoodscan/database";
 import { serializeBigInt } from "../utils/serialize";
+import { parsePagination } from "../utils/pagination";
 
 /**
  * GET /address/:address/transactions?limit=20&offset=0
@@ -9,8 +10,7 @@ import { serializeBigInt } from "../utils/serialize";
  */
 export async function listTransactionsByAddress(req: Request, res: Response) {
   const address = req.params.address.toLowerCase();
-  const limit = Math.min(Number(req.query.limit) || 20, 100);
-  const offset = Number(req.query.offset) || 0;
+  const { limit, offset } = parsePagination(req, 20, 100);
 
   const where = {
     OR: [{ fromAddress: address }, { toAddress: address }],
@@ -22,6 +22,9 @@ export async function listTransactionsByAddress(req: Request, res: Response) {
       orderBy: [{ blockNumber: "desc" }, { transactionIndex: "desc" }],
       take: limit,
       skip: offset,
+      include: {
+        block: { select: { timestamp: true, isFinalized: true } },
+      },
     }),
     prisma.transaction.count({ where }),
   ]);

@@ -28,7 +28,7 @@ export default async function AllTransactionsPage({
         </p>
       ) : (
         <>
-          <TxTable transactions={data.transactions} showAge />
+          <TxTable transactions={data.transactions} variant="detailed" />
           <Pagination
             basePath="/transactions"
             page={page}

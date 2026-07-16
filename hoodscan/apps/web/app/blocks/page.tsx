@@ -28,7 +28,7 @@ export default async function AllBlocksPage({
         </p>
       ) : (
         <>
-          <BlocksTable blocks={data.blocks} />
+          <BlocksTable blocks={data.blocks} variant="detailed" />
           <Pagination
             basePath="/blocks"
             page={page}

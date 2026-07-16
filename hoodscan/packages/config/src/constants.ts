@@ -34,8 +34,3 @@ export const L1_RPC_URL_MAINNET = process.env.L1_RPC_URL_MAINNET ?? "";
 export const INDEXER_POLL_INTERVAL_MS = Number(
   process.env.INDEXER_POLL_INTERVAL_MS ?? 500
 );
-
-// Known Arbitrum "system" sender/receiver address pattern observed
-// on Robinhood Chain (type 0x6a txs), used to flag internal L1<->L2
-// sync transactions distinctly in the explorer UI.
-export const ARBITRUM_SYSTEM_ADDRESS_SUFFIX = "0a4b05";

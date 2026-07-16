@@ -67,3 +67,103 @@ export function LayersIcon({
     </svg>
   );
 }
+
+/** Stacked-bars icon — used for "Latest block" / block-count stats. Not
+ * to be confused with LayersIcon above (stacked hexagons, L1<->L2). */
+export function StackIcon({
+  className = "",
+  size = 20,
+}: {
+  className?: string;
+  size?: number;
+}) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+      <rect x="4" y="4" width="16" height="3.5" rx="1" fill="currentColor" opacity="0.95" />
+      <rect x="4" y="10.25" width="16" height="3.5" rx="1" fill="currentColor" opacity="0.65" />
+      <rect x="4" y="16.5" width="16" height="3.5" rx="1" fill="currentColor" opacity="0.35" />
+    </svg>
+  );
+}
+
+/** Zigzag pulse icon — transaction/activity throughput. */
+export function ActivityIcon({
+  className = "",
+  size = 20,
+}: {
+  className?: string;
+  size?: number;
+}) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+      <path
+        d="M3 12h4l2-7 4 14 2-7h6"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** Chain-link icon — cross-chain / L1 reference. */
+export function LinkIcon({
+  className = "",
+  size = 20,
+}: {
+  className?: string;
+  size?: number;
+}) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+      <path
+        d="M10 13a5 5 0 0 0 7.07 0l1.41-1.41a5 5 0 0 0-7.07-7.07L10 5.93"
+        stroke="currentColor"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 11a5 5 0 0 0-7.07 0L5.5 12.43a5 5 0 0 0 7.07 7.07L14 18.07"
+        stroke="currentColor"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/** Speedometer icon — gas/load metrics. */
+export function GaugeIcon({
+  className = "",
+  size = 20,
+}: {
+  className?: string;
+  size?: number;
+}) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+      <path d="M4 16a8 8 0 1 1 16 0" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M12 16l4-5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+      <circle cx="12" cy="16" r="1.4" fill="currentColor" />
+    </svg>
+  );
+}
+
+/** 2x2 grid icon — density/ratio metrics (e.g. avg transactions per block). */
+export function GridIcon({
+  className = "",
+  size = 20,
+}: {
+  className?: string;
+  size?: number;
+}) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+      <rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.9" />
+      <rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.9" />
+      <rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.9" />
+      <rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.9" />
+    </svg>
+  );
+}

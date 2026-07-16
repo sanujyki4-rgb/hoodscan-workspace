@@ -63,7 +63,7 @@ export async function Header() {
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-lime-bright" />
               </span>
               <span className="font-mono text-[11px] font-medium text-ink">
-                #{Number(latestBlock.number).toLocaleString()}
+                #{latestBlock.number}
               </span>
             </Link>
           )}
